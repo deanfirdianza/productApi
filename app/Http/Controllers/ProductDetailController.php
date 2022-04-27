@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductDetail;
 use Illuminate\Http\Request;
+use Illuminate\Queue\InvalidPayloadException;
 
 class ProductDetailController extends Controller
 {
@@ -14,7 +15,7 @@ class ProductDetailController extends Controller
      */
     public function index()
     {
-        //
+        return ProductDetail::paginate(5);
     }
 
     /**
@@ -35,7 +36,18 @@ class ProductDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $productDetail = new ProductDetail();
+        $productDetail->name = $request->name;
+        $productDetail->color = $request->color;
+        $productDetail->purchase_price = $request->purchase_price;
+        $productDetail->save();
+        
+        if($productDetail){
+            return response()
+            ->json(['message' => 'productDetail created','data' => $productDetail]);
+        } else {
+            throw new InvalidPayloadException();
+        }
     }
 
     /**
@@ -46,7 +58,7 @@ class ProductDetailController extends Controller
      */
     public function show(ProductDetail $productDetail)
     {
-        //
+        return $productDetail;
     }
 
     /**
@@ -69,7 +81,17 @@ class ProductDetailController extends Controller
      */
     public function update(Request $request, ProductDetail $productDetail)
     {
-        //
+        $productDetail->name = $request->name ?? $productDetail->name;
+        $productDetail->color = $request->color ?? $productDetail->color;
+        $productDetail->purchase_price = $request->purchase_price ?? $productDetail->purchase_price;
+        $productDetail->save();
+        
+        if($productDetail){
+            return response()
+            ->json(['message' => 'productDetail updated','data' => $productDetail]);
+        } else {
+            throw new InvalidPayloadException();
+        }
     }
 
     /**
@@ -80,6 +102,13 @@ class ProductDetailController extends Controller
      */
     public function destroy(ProductDetail $productDetail)
     {
-        //
+        $productDetail->delete();
+
+        if($productDetail){
+            return response()
+            ->json(['message' => 'productDetail deleted','data' => $productDetail]);
+        } else {
+            throw new InvalidPayloadException();
+        }
     }
 }

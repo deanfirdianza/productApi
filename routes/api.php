@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -16,27 +17,29 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')
-    ->get('/', function () {
-    return 'Home';
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/', function () {
+        return 'Home';
+    });
+    Route::resource('users', UserController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('product-details', ProductDetailController::class);
 });
-
-Route::middleware('auth:sanctum')
-    ->resource('users', UserController::class);
-
-Route::middleware('auth:sanctum')
-    ->resource('categories', CategoryController::class);
 
 Route::controller(AuthController::class)
     ->prefix('auth')
     ->group(function() {
-        Route::middleware('auth:sanctum')
-        ->get('/', function() {
-            return auth()->user();
+        
+        Route::middleware('auth:sanctum')->group(function() {
+            
+            Route::get('/', function() {
+                return auth()->user();
+            });
+            Route::post('logout', 'logout');
+        
         });
 
         Route::post('validate', 'login');
-        
-        Route::middleware('auth:sanctum')
-        ->post('logout', 'logout');
+
 });
