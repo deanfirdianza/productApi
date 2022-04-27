@@ -15,14 +15,3 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/', function () {
-    return 'test';
-});
-
-Route::middleware('auth:sanctum')->resource('users', UserController::class);
-
-Route::controller(AuthController::class)->group(function() {
-    Route::post('auth/validate', 'login');
-    Route::post('auth/logout', 'logout');
-});
