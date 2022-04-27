@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductDetailCollection;
 use App\Models\ProductDetail;
 use Illuminate\Http\Request;
 use Illuminate\Queue\InvalidPayloadException;
@@ -110,5 +111,10 @@ class ProductDetailController extends Controller
         } else {
             throw new InvalidPayloadException();
         }
+    }
+
+    public function publicProductDetail()
+    {        
+        return new ProductDetailCollection(ProductDetail::all());
     }
 }

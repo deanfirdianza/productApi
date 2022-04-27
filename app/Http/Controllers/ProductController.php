@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductCollection;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Queue\InvalidPayloadException;
@@ -130,4 +131,9 @@ class ProductController extends Controller
             throw new InvalidPayloadException();
         }
     }
+
+    public function publicProduct()
+   {
+        return new ProductCollection(Product::all());
+   } 
 }

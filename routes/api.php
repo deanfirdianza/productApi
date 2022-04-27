@@ -29,6 +29,12 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::resource('products', ProductController::class);
 });
 
+Route::prefix('/public')->group(function() {    
+    Route::get('categories', [CategoryController::class, 'publicList']);
+    Route::get('product-details', [ProductDetailController::class, 'publicProductDetail']);
+    Route::get('products', [ProductController::class, 'publicProduct']);
+});
+
 Route::controller(AuthController::class)
     ->prefix('auth')
     ->group(function() {
