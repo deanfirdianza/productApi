@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Queue\InvalidPayloadException;
 use Illuminate\Support\Str;
 
@@ -15,9 +16,22 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return Product::paginate(5);
+    public function index(Request $request)
+    {        
+        if($request->query('order') == 'desc')
+        {
+            $product = Product::orderByDesc('created_at');
+        } else {
+            $product = Product::orderBy('created_at');
+        }
+
+        if($request->query('category'))
+        {
+            $product = $product->whereHas('categories', function($q) use ($request) {
+                $q->where('name', $request->query('category'));
+            });
+        }
+        return $product->paginate(5);    
     }
 
     /**
