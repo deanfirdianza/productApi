@@ -10,4 +10,5 @@ class PersonalAccessToken extends BasePersonalAccessToken
     {
         return $this->morphTo('tokenable', "tokenable_type", "tokenable_id");
     }
+    
 }

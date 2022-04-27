@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth:sanctum')->get('/', function () {
+    return 'test';
 });
-Route::resource('users', UserController::class)->middleware('api_auth')->except([
-    'update', 'destroy'
-]);
+
+Route::middleware('auth:sanctum')->resource('users', UserController::class);
 
 Route::controller(AuthController::class)->group(function() {
-    Route::post('users', 'register')->middleware('api_auth');
-    Route::post('users/login', 'login');
+    Route::post('auth/validate', 'login');
+    Route::post('auth/logout', 'logout');
 });
