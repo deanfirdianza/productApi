@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\UserController;
 
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('product-details', ProductDetailController::class);
+    Route::resource('products', ProductController::class);
 });
 
 Route::controller(AuthController::class)
