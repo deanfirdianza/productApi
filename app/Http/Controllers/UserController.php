@@ -36,7 +36,8 @@ class UserController extends Controller
         $user->save();
         
         if($user){
-            return 'User created';
+            return response()            
+            ->json(['message' => 'User created','data' => $user]);
         } else {
             throw new InvalidPayloadException();
         }
@@ -67,8 +68,9 @@ class UserController extends Controller
         $user->email = $request->email ?? $user->email;
         $user->save();
         
-        if($user){
-            return 'User updated';
+        if($user){            
+            return response()            
+            ->json(['message' => 'User updated','data' => $user]);
         } else {
             throw new InvalidPayloadException();
         }
@@ -86,15 +88,10 @@ class UserController extends Controller
         $user->delete();
 
         if($user){
-            return 'User deleted';
+            return response()
+            ->json(['message' => 'User deleted','data' => $user]);
         } else {
             throw new InvalidPayloadException();
         }
-    }
-
-    public function login(Request $request) {
-        $user = User::where('email', '=', $request->email)        
-        ->first();
-        return $user;
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -23,9 +24,17 @@ Route::middleware('auth:sanctum')
 Route::middleware('auth:sanctum')
     ->resource('users', UserController::class);
 
+Route::middleware('auth:sanctum')
+    ->resource('categories', CategoryController::class);
+
 Route::controller(AuthController::class)
     ->prefix('auth')
     ->group(function() {
+        Route::middleware('auth:sanctum')
+        ->get('/', function() {
+            return auth()->user();
+        });
+
         Route::post('validate', 'login');
         
         Route::middleware('auth:sanctum')
